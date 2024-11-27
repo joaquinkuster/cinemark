@@ -1,0 +1,577 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package frames;
+
+import frames.*;
+import static frames.Registro.sexo;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
+public class Ticket extends javax.swing.JFrame {
+
+    /**
+     * Creates new form Ticket
+     */
+    
+    public int num=0;
+    public double importe, total=0, subtotal=0;
+    Calendar fecha;
+    DecimalFormat df;
+    
+    public Ticket() {
+        initComponents();
+        setLocationRelativeTo(null);
+        df = new DecimalFormat("#.00");
+        
+        DefaultTableModel modelo = (DefaultTableModel)tabla1.getModel();
+        
+        fecha = new GregorianCalendar();
+        
+        f.setText("Fecha: " + fecha.get(Calendar.YEAR) + "-" + fecha.get(Calendar.MONTH) + "-" + fecha.get(Calendar.DAY_OF_MONTH));
+        
+        importe = (double) (Asientos.tickets*552.15);
+        total += importe;
+        subtotal += importe;
+        String datos[] = {"Tickets", String.valueOf(Asientos.tickets), "552.15", String.valueOf(df.format(importe))};
+        
+        modelo.addRow(datos);
+        
+        if (SnackBar.combo1 <= 0) {
+            
+            
+            
+        } else {
+            
+            importe = (double) (SnackBar.combo1*363.39);
+            total += importe;
+            subtotal += importe;
+            String combo1[] = {"COMBO MEGA", String.valueOf(SnackBar.combo1), "363.39", String.valueOf(df.format(importe))};
+            
+            modelo.addRow(combo1);
+        }
+        
+        if (SnackBar.combo2 <= 0) {
+
+        } else {
+
+            importe = (double) (SnackBar.combo2 * 290.71);
+            total += importe;
+            subtotal += importe;
+            String combo2[] = {"COMBO M&MS", String.valueOf(SnackBar.combo2), "290.71", String.valueOf(df.format(importe))};
+
+            modelo.addRow(combo2);
+        }
+
+        if (SnackBar.combo3 <= 0) {
+
+        } else {
+
+            importe = (double) (SnackBar.combo3 * 436.07);
+            total += importe;
+            subtotal += importe;
+            String combo3[] = {"COMBO BALDE", String.valueOf(SnackBar.combo3), "436.07", String.valueOf(df.format(importe))};
+
+            modelo.addRow(combo3);
+        }
+
+        if (SnackBar.combo4 <= 0) {
+
+        } else {
+
+            importe = (double) (SnackBar.combo4 * 290.71);
+            total += importe;
+            subtotal += importe;
+            String combo4[] = {"COMBO FINI", String.valueOf(SnackBar.combo4), "290.71", String.valueOf(df.format(importe))};
+
+            modelo.addRow(combo4);
+        }
+        
+        s.setText("$" + String.valueOf(df.format(subtotal)));
+        
+        if (Premium.premium) {
+
+            t.setText("$" + String.valueOf(df.format(0.5 * total)));
+            total = 0.5 * total;
+            descuento.setVisible(true);
+   
+        } else {
+        
+            t.setText("$" + String.valueOf(df.format(total)));
+            descuento.setVisible(false);
+        
+        }
+        
+        try {
+
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/bd_cinemark", "root", "");
+            PreparedStatement pst = cn.prepareStatement("insert into facturas values(?,?,?,?,?,?,?,?,?)");
+
+            pst.setString(1, "0");
+            pst.setString(2, Registro.nombre);
+            pst.setString(3, Lobby.pelicula);
+            pst.setString(4, Sesion.fecha);
+            pst.setString(5, Sesion.horario);
+            pst.setInt(6, Asientos.tickets);
+            pst.setInt(7, (SnackBar.combo1 + SnackBar.combo2 + SnackBar.combo3 + SnackBar.combo4));
+            pst.setDouble(8, subtotal);
+            pst.setDouble(9, total);
+
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, "Error al guardar: " + e);
+
+        }
+        
+        try {
+            
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/bd_cinemark", "root", "");
+            PreparedStatement pst = cn.prepareStatement("SELECT * FROM facturas ORDER BY id DESC LIMIT 1");
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                
+                num = rs.getInt("id");
+               
+                n.setText("Numero: " + String.valueOf(num));
+                
+            }
+            
+        } catch (Exception e) {
+        }
+        
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        panel1 = new javax.swing.JPanel();
+        logo = new javax.swing.JLabel();
+        BotonCerrar = new rojeru_san.RSButton();
+        BotonMinimizar1 = new rojeru_san.RSButton();
+        jPanel2 = new javax.swing.JPanel();
+        n = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        factura = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        t = new javax.swing.JLabel();
+        jNumero = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        f = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabla1 = new rojeru_san.complementos.TableMetro();
+        s = new javax.swing.JLabel();
+        jNumero4 = new javax.swing.JLabel();
+        BotonContinuar = new rojeru_san.RSButtonRiple();
+        de = new javax.swing.JLabel();
+        p = new javax.swing.JLabel();
+        p1 = new javax.swing.JLabel();
+        descuento = new javax.swing.JLabel();
+        fondo = new javax.swing.JLabel();
+        fondo1 = new javax.swing.JLabel();
+        fondo2 = new javax.swing.JLabel();
+        fondo3 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(1920, 1080));
+        setSize(new java.awt.Dimension(1920, 1080));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panel1.setBackground(new java.awt.Color(255, 255, 255));
+        panel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo-cinemark.png"))); // NOI18N
+        logo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoMouseClicked(evt);
+            }
+        });
+        panel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 140));
+
+        BotonCerrar.setBackground(new java.awt.Color(255, 255, 255));
+        BotonCerrar.setBorder(null);
+        BotonCerrar.setText("X");
+        BotonCerrar.setBorderPainted(false);
+        BotonCerrar.setColorHover(new java.awt.Color(255, 0, 0));
+        BotonCerrar.setColorText(new java.awt.Color(0, 0, 0));
+        BotonCerrar.setFocusable(false);
+        BotonCerrar.setFont(new java.awt.Font("Roboto Bold", 1, 24)); // NOI18N
+        BotonCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonCerrarMouseClicked(evt);
+            }
+        });
+        panel1.add(BotonCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1840, 0, 80, 40));
+
+        BotonMinimizar1.setBackground(new java.awt.Color(255, 255, 255));
+        BotonMinimizar1.setBorder(null);
+        BotonMinimizar1.setText("—");
+        BotonMinimizar1.setBorderPainted(false);
+        BotonMinimizar1.setColorHover(new java.awt.Color(204, 204, 204));
+        BotonMinimizar1.setColorText(new java.awt.Color(0, 0, 0));
+        BotonMinimizar1.setFocusable(false);
+        BotonMinimizar1.setFont(new java.awt.Font("Roboto Bold", 1, 24)); // NOI18N
+        BotonMinimizar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonMinimizar1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BotonMinimizar1MouseEntered(evt);
+            }
+        });
+        BotonMinimizar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonMinimizar1ActionPerformed(evt);
+            }
+        });
+        panel1.add(BotonMinimizar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1780, 0, 60, 40));
+
+        getContentPane().add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 140));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        n.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        jPanel2.add(n, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 410, 50));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/10765cc139e34d7a7a61667e060868e3.gif"))); // NOI18N
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 610, 460, 270));
+
+        factura.setFont(new java.awt.Font("Roboto Bold", 3, 76));
+        factura.setText("FACTURA ");
+        jPanel2.add(factura, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 10, 410, 70));
+
+        jPanel1.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel1.setPreferredSize(new java.awt.Dimension(50, 50));
+
+        jPanel6.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel6.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel1.add(jPanel6);
+
+        jPanel7.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel7.setPreferredSize(new java.awt.Dimension(50, 50));
+
+        jPanel8.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel8.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel7.add(jPanel8);
+
+        jPanel1.add(jPanel7);
+
+        jPanel9.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel9.setPreferredSize(new java.awt.Dimension(50, 50));
+
+        jPanel10.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel10.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel9.add(jPanel10);
+
+        jPanel11.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel11.setPreferredSize(new java.awt.Dimension(50, 50));
+
+        jPanel12.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel12.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel11.add(jPanel12);
+
+        jPanel9.add(jPanel11);
+
+        jPanel1.add(jPanel9);
+
+        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 90, 1300, 5));
+
+        t.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        t.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel2.add(t, new org.netbeans.lib.awtextra.AbsoluteConstraints(1350, 720, 390, 60));
+
+        jNumero.setFont(new java.awt.Font("Roboto Bold", 3, 58));
+        jNumero.setText("TOTAL");
+        jPanel2.add(jNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 720, 350, 60));
+
+        jPanel3.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel3.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 430, 5));
+
+        jPanel5.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel5.setPreferredSize(new java.awt.Dimension(50, 50));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 430, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 430, 2));
+
+        jPanel14.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel14.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel2.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 790, 670, 2));
+
+        jPanel4.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel4.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 685, 670, 5));
+
+        jPanel13.setBackground(new java.awt.Color(181, 18, 27));
+        jPanel13.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel2.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 320, 1300, 5));
+
+        f.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        f.setText("Fecha: 2019-03-09");
+        jPanel2.add(f, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 410, 50));
+
+        tabla1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Descripción", "Cantidad", "Precio ", "Importe"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabla1.setColorBackgoundHead(new java.awt.Color(181, 18, 27));
+        tabla1.setColorFilasForeground1(new java.awt.Color(181, 18, 27));
+        tabla1.setColorFilasForeground2(new java.awt.Color(204, 4, 17));
+        tabla1.setColorSelBackgound(new java.awt.Color(181, 18, 27));
+        tabla1.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        tabla1.setFuenteFilas(new java.awt.Font("Roboto Bold", 3, 48));
+        tabla1.setFuenteFilasSelect(new java.awt.Font("Roboto Bold", 3, 48));
+        tabla1.setFuenteHead(new java.awt.Font("Roboto Bold", 3, 48));
+        tabla1.setRowHeight(50);
+        tabla1.setSelectionBackground(new java.awt.Color(204, 4, 17));
+        jScrollPane2.setViewportView(tabla1);
+
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 1730, 250));
+
+        s.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        s.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel2.add(s, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 620, 410, 60));
+
+        jNumero4.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        jNumero4.setText("SUBTOTAL");
+        jPanel2.add(jNumero4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 620, 360, 60));
+
+        BotonContinuar.setBackground(new java.awt.Color(204, 4, 17));
+        BotonContinuar.setText("Continuar");
+        BotonContinuar.setColorHover(new java.awt.Color(181, 18, 27));
+        BotonContinuar.setFont(new java.awt.Font("Roboto Bold", 3, 48)); // NOI18N
+        BotonContinuar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonContinuarMouseClicked(evt);
+            }
+        });
+        jPanel2.add(BotonContinuar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1460, 810, 290, 80));
+
+        de.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        de.setText("De: Cinemark");
+        jPanel2.add(de, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 710, 50));
+
+        p.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        p.setText(Lobby.pelicula + " 3D"
+        );
+        jPanel2.add(p, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 830, 60));
+
+        p1.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        p1.setText(Sesion.fecha + " " + Sesion.horario
+        );
+        jPanel2.add(p1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 240, 790, 60));
+
+        descuento.setFont(new java.awt.Font("Roboto Bold", 3, 48));
+        descuento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/vip2.png"))); // NOI18N
+        descuento.setText("50% DE DESCUENTO ");
+        jPanel2.add(descuento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 150, 1770, 910));
+
+        fondo.setBackground(new java.awt.Color(255, 255, 255));
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo.jpg"))); // NOI18N
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 1560, 780));
+
+        fondo1.setBackground(new java.awt.Color(255, 255, 255));
+        fondo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo.jpg"))); // NOI18N
+        getContentPane().add(fondo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1560, 790));
+
+        fondo2.setBackground(new java.awt.Color(255, 255, 255));
+        fondo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo.jpg"))); // NOI18N
+        getContentPane().add(fondo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 0, 1560, 820));
+
+        fondo3.setBackground(new java.awt.Color(255, 255, 255));
+        fondo3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo.jpg"))); // NOI18N
+        getContentPane().add(fondo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 290, 1390, 820));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void logoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoMouseClicked
+        int msj = JOptionPane.showConfirmDialog(null, "¿Estás seguro/a que desea salir?", "", JOptionPane.YES_NO_OPTION);
+
+        if (msj==JOptionPane.YES_OPTION){
+
+            Lobby ventana = new Lobby();
+            ventana.setVisible(true);
+            this.dispose();
+        }          // TODO add your handling code here:
+    }//GEN-LAST:event_logoMouseClicked
+
+    private void BotonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonCerrarMouseClicked
+        int msj = JOptionPane.showConfirmDialog(null, "¿Estás seguro/a que desea salir?", "", JOptionPane.YES_NO_OPTION);
+
+        if (msj==JOptionPane.YES_OPTION){
+
+            System.exit(0);
+
+        }   ;
+    }//GEN-LAST:event_BotonCerrarMouseClicked
+
+    private void BotonMinimizar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonMinimizar1MouseClicked
+        this.setExtendedState(ICONIFIED);
+    }//GEN-LAST:event_BotonMinimizar1MouseClicked
+
+    private void BotonMinimizar1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonMinimizar1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BotonMinimizar1MouseEntered
+
+    private void BotonMinimizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonMinimizar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BotonMinimizar1ActionPerformed
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void BotonContinuarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonContinuarMouseClicked
+        JOptionPane.showMessageDialog(null, "Su compra ha sido realizada con éxito", "", JOptionPane.INFORMATION_MESSAGE);
+
+        Lobby ventana = new Lobby();
+        ventana.setVisible(true);
+        this.dispose();// TODO add your handling code here:
+    }//GEN-LAST:event_BotonContinuarMouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Ticket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Ticket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Ticket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Ticket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Ticket().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private rojeru_san.RSButton BotonCerrar;
+    private rojeru_san.RSButtonRiple BotonContinuar;
+    private rojeru_san.RSButton BotonMinimizar1;
+    private javax.swing.JLabel de;
+    private javax.swing.JLabel descuento;
+    private javax.swing.JLabel f;
+    private javax.swing.JLabel factura;
+    private javax.swing.JLabel fondo;
+    private javax.swing.JLabel fondo1;
+    private javax.swing.JLabel fondo2;
+    private javax.swing.JLabel fondo3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jNumero;
+    private javax.swing.JLabel jNumero4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel logo;
+    private javax.swing.JLabel n;
+    private javax.swing.JLabel p;
+    private javax.swing.JLabel p1;
+    private javax.swing.JPanel panel1;
+    private javax.swing.JLabel s;
+    private javax.swing.JLabel t;
+    private rojeru_san.complementos.TableMetro tabla1;
+    // End of variables declaration//GEN-END:variables
+}
